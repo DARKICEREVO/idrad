@@ -5,6 +5,7 @@ import glob
 import os
 
 from torch.utils.data import Dataset
+from sklearn.preprocessing import OneHotEncoder
 
 
 class HDF5Dataset(Dataset):
@@ -48,7 +49,8 @@ class HDF5Dataset(Dataset):
             for si in range(0, max(1, self.frms_per_seq[fi] - self._sample_length), self._shift):
                 self._indices.append((fi, si))
                 self._targets.append(targets[fi])
-
+        self.encoder = OneHotEncoder()
+        self.encoder.fit(self._targets.reshape(-1,1))
         self._targets = torch.from_numpy(np.asarray(self._targets))
         self._length = len(self._indices)
 
@@ -72,7 +74,7 @@ class HDF5Dataset(Dataset):
         if self._transform is not None:
             sample = self._transform(sample)
 
-        return sample, (sample,self._targets[index])
+        return sample, (sample,self.encoder.transform(self._targets[index]))
 
     def __len__(self):
         return self._length
