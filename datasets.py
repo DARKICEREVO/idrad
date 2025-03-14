@@ -74,7 +74,7 @@ class HDF5Dataset(Dataset):
         if self._transform is not None:
             sample = self._transform(sample)
 
-        return sample, (sample,self.encoder.transform(self._targets[index]))
+        return sample, (sample,torch.from_numpy(self.encoder.transform(self._targets[index].numpy().reshape(-1,1)).toarray()))
 
     def __len__(self):
         return self._length
