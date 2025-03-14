@@ -72,7 +72,7 @@ class HDF5Dataset(Dataset):
         if self._transform is not None:
             sample = self._transform(sample)
 
-        return sample, self._targets[index]
+        return sample, (sample,self._targets[index])
 
     def __len__(self):
         return self._length
