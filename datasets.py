@@ -50,7 +50,7 @@ class HDF5Dataset(Dataset):
                 self._indices.append((fi, si))
                 self._targets.append(targets[fi])
         self.encoder = OneHotEncoder()
-        self.encoder.fit(self._targets)
+        self.encoder.fit(np.asarray(self._targets).reshape(-1,1))
         self._targets = torch.from_numpy(np.asarray(self._targets))
         self._length = len(self._indices)
 
