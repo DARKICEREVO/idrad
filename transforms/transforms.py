@@ -23,5 +23,5 @@ def microdoppler_transform(sample, values=None, standard_scaling=False, minmax_s
     # plt.imshow(sample.T)
     # plt.show()
 
-    return th.from_numpy(sample.astype(np.float32).reshape((1,) + sample.shape))
+    return th.from_numpy(np.expand_dims(sample.astype(np.float32), axis=-1))
 
