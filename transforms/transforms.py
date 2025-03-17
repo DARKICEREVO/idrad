@@ -7,6 +7,9 @@ import matplotlib.pylab as plt
 
 def microdoppler_transform(sample, values=None, standard_scaling=False, minmax_scaling=False, local_scaling=False, preprocessing=False):
 
+    if preprocessing:
+        sample = np.concatenate((sample[:, 24:127], sample[:, 130:232]), axis=1)
+
     if minmax_scaling:
         sample = (sample - values["min"]) / (values["max"] - values["min"])
 
@@ -16,9 +19,7 @@ def microdoppler_transform(sample, values=None, standard_scaling=False, minmax_s
     if local_scaling:
         sample = (sample - sample.min()) / (sample.max() - sample.min())
 
-    if preprocessing:
-        sample = np.concatenate((sample[:, 24:127], sample[:, 130:232]), axis=1)
-
+    
     # print(sample.shape)
     # plt.imshow(sample.T)
     # plt.show()
